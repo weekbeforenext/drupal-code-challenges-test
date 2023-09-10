@@ -4,6 +4,7 @@
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/drupal",
+    "minimum-stability": "dev",
     "support": {
         "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
         "chat": "https://www.drupal.org/node/314178"
@@ -12,6 +13,19 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "nots0solo/swapimigration",
+                "version": "dev-feature/nots0solo/17",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://github.com/notS0Solo/swapimigration.git",
+                    "type": "git",
+                    "reference": "feature/nots0solo/17"
+                }
+            }
         }
     ],
     "require": {
@@ -19,7 +33,8 @@
         "drupal/core-composer-scaffold": "^10.1",
         "drupal/core-project-message": "^10.1",
         "drupal/core-recommended": "^10.1",
-        "drush/drush": "^12.2"
+        "drush/drush": "^12.2",
+        "nots0solo/swapimigration": "dev-feature/nots0solo/17"
     },
     "conflict": {
         "drupal/drupal": "*"

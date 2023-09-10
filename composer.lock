@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c626a17aa0399f75fee4b6894510214",
+    "content-hash": "eabe567786576d8241bfb938bef36849",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2354,6 +2354,16 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.17.1"
             },
             "time": "2023-08-13T19:53:39+00:00"
+        },
+        {
+            "name": "nots0solo/swapimigration",
+            "version": "dev-feature/nots0solo/17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/notS0Solo/swapimigration.git",
+                "reference": "feature/nots0solo/17"
+            },
+            "type": "drupal-module"
         },
         {
             "name": "pear/archive_tar",
@@ -5998,7 +6008,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "nots0solo/swapimigration": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
