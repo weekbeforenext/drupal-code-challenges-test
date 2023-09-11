@@ -83,10 +83,10 @@ services:
       # and update steps, because the results of those are inherited
       # from the base preview.
       build:
-        - vendor/bin/drush cache:rebuild
-        - vendor/bin/drush config:import -y
-        - vendor/bin/drush updatedb -y
-        - vendor/bin/drush cache:rebuild
+      # Install/update packages managed by composer, including drush.
+        - composer install --optimize-autoloader
+      # Run the drush deploy command.
+        - vendor/bin/drush deploy -v -y
 
   # This 'mysql' key acts as the hostname to access the service by from the php service.
   mysql:
