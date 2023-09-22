@@ -21,17 +21,17 @@ A Drupal site for testing Drupal Code Challenge solutions.
 
     ```
     {
-      "type": "package",
-      "package": {
-          "name": "username/repository_name",
-          "version": "dev-branch_name",
-          "type": "drupal-module",
-          "source": {
-              "url": "https://github.com/username/repository_name.git",
-              "type": "git",
-              "reference": "branch_name"
-          }
-      }
+        "type": "package",
+        "package": {
+            "name": "username/repository_name",
+            "version": "dev-branch_name",
+            "type": "drupal-module",
+            "source": {
+                "url": "https://github.com/username/repository_name.git",
+                "type": "git",
+                "reference": "branch_name"
+            }
+        }
     }
     ```
     Replace `username` with the GitHub repository username and `repository_name` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
