@@ -19,8 +19,6 @@ A Drupal site for testing Drupal Code Challenge solutions.
 
 [Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
 
-Use the provided database backup file [drupal-code-challenges.sql.gz](drupal-code-challentes.sql.gz) in the Tugboat setup.
-
 ## Updating Drupal core
 
 1. Install the site in DDEV and run the following:
