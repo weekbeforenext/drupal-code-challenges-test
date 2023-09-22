@@ -52,6 +52,8 @@ A Drupal site for testing Drupal Code Challenge solutions locally or remotely.
 
 [Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
 
+---
+
 ## Updating Drupal core (Maintainers Only)
 
 Maintainers of this project can follow these steps to keep this project up-to-date with core and contrib module updates.
