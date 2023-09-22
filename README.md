@@ -15,20 +15,16 @@ A Drupal site for testing Drupal Code Challenge solutions.
     ddev launch
     ```
 
-## Remote testing (Tugboat)
-
-[Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
-
 ## Add a GitHub module to composer
 
-1. Add the GitHub repository:
+1. Add the module's GitHub repository to the composer.json file repositories array like this:
 
     ```
     {
       "type": "package",
       "package": {
           "name": "username/repository_name",
-          "version": "branch_name",
+          "version": "dev-branch_name",
           "type": "drupal-module",
           "source": {
               "url": "https://github.com/username/repository_name.git",
@@ -38,7 +34,7 @@ A Drupal site for testing Drupal Code Challenge solutions.
       }
     }
     ```
-    Replace `username` with the GitHub repository username and `repository_name` with the repository name. For example, the name of this project is `weekbeforenext/drupal-code-challenges-test`.
+    Replace `username` with the GitHub repository username and `repository_name` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
 
     Replace `branch_name` with the name of the branch you want to test for the GitHub repository.
   2. Require the project:
@@ -46,12 +42,11 @@ A Drupal site for testing Drupal Code Challenge solutions.
       ```
       ddev composer require username/repository_name
       ```
-      Again, replace `username` with the GitHub repository username and `repository_name` with the repository name. For example, the name of this project is `weekbeforenext/drupal-code-challenges-test`.
+      Again, replace `username` with the GitHub repository username and `repository_name` with the repository name in the command.
 
-      If you want to require a feature branch from the repository, you can specify the branch name prefixed with `dev-`:
-      ```
-      ddev composer require username/repository_name:dev-feature_branch_name
-      ```
+## Remote testing (Tugboat)
+
+[Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
 
 ## Updating Drupal core
 
