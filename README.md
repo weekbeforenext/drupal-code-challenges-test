@@ -1,5 +1,9 @@
 # Drupal Code Challenges Test Site
-A Drupal site for testing Drupal Code Challenge solutions.
+A Drupal site for testing Drupal Code Challenge solutions locally or remotely.
+
+- [Local testing (DDEV)](#local-testing-ddev)
+- [Add a GitHub module to composer](#add-a-github-module-to-composer)
+- [Remote testing (Tugboat)](#remote-testing-tugboat)
 
 ## Local testing (DDEV)
 
@@ -48,7 +52,11 @@ A Drupal site for testing Drupal Code Challenge solutions.
 
 [Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
 
-## Updating Drupal core
+---
+
+## Updating Drupal core (Maintainers Only)
+
+Maintainers of this project can follow these steps to keep this project up-to-date with core and contrib module updates.
 
 1. Install the site in DDEV and run the following:
 
