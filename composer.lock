@@ -6104,7 +6104,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "nots0solo/swapimigration": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
