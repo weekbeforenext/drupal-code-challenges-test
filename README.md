@@ -48,6 +48,14 @@ A Drupal site for testing Drupal Code Challenge solutions locally or remotely.
       ```
       Again, replace `username` with the GitHub repository username and `repository_name` with the repository name in the command.
 
+### Update to the latest feature branch changes
+
+If you've started testing a module and changes are committed and pushed to the feature branch, follow these steps to pull in the latest code for re-testing:
+
+1. Delete the module directory.
+2. Run `ddev composer clear-cache`.
+3. Run `ddev composer update username/repository_name` (Again, replace `username` with the GitHub repository username and `repository_name` with the repository name in the command).
+
 ## Remote testing (Tugboat)
 
 [Tugboat](https://www.tugboatqa.com/) configuration is included in this codebase as a convenient way to create a remote Drupal test site.
