@@ -18,40 +18,23 @@ A Drupal site for testing Drupal Code Challenge solutions locally or remotely.
 
 ## Add a GitHub module to composer
 
-1. Add the module's GitHub repository to the composer.json file repositories array like this:
+Use the following custom DDEV command to add the GitHub repository configuration to composer.json and require the module:
 
-    ```
-    {
-        "type": "package",
-        "package": {
-            "name": "username/repository_name",
-            "version": "dev-branch_name",
-            "type": "drupal-module",
-            "source": {
-                "url": "https://github.com/username/repository_name.git",
-                "type": "git",
-                "reference": "branch_name"
-            }
-        }
-    }
-    ```
-    Replace `username` with the GitHub repository username and `repository_name` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
+```
+ddev dcc-add-module [username] [repo-name] [branch-name]
+```
 
-    Replace `branch_name` with the name of the branch you want to test for the GitHub repository.
-  2. Require the project:
+Replace `[username]` with the GitHub repository username and `[repo-name]` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
 
-      ```
-      ddev composer require username/repository_name
-      ```
-      Again, replace `username` with the GitHub repository username and `repository_name` with the repository name in the command.
+Replace `[branch_name]` with the name of the branch you want to test for the GitHub repository.
 
 ### Update to the latest feature branch changes
 
-If you've started testing a module and changes are committed and pushed to the feature branch, follow these steps to pull in the latest code for re-testing:
+If you've started testing a module and changes are committed and pushed to the feature branch, use this custom DDEV command to pull in the latest code for re-testing:
 
-1. Delete the module directory.
-2. Run `ddev composer clear-cache`.
-3. Run `ddev composer update username/repository_name` (Again, replace `username` with the GitHub repository username and `repository_name` with the repository name in the command).
+```
+ddev dcc-up-module
+```
 
 ## Remote testing (Tugboat)
 

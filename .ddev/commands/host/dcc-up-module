@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## Description: Pulls the latest changes for an existing GitHub module and feature branch
+## Usage: dcc-up-module [username] [repo-name]
+## Example: "ddev dcc-up-module weekbeforenext dcc-api-migration"
+## ProjectTypes: drupal10
+## ExecRaw: true
+
+# Remove the module directory.
+rm -rf web/modules/contrib/$2
+# Clear composer cache.
+ddev composer clear-cache
+# Update the module package in composer.
+ddev composer update $1/$2

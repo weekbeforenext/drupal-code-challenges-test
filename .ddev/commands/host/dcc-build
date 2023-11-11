@@ -6,7 +6,11 @@
 ## ProjectTypes: drupal10
 ## ExecRaw: true
 
+# Start the DDEV containers.
 ddev start
+# Download composer packages.
 ddev composer install
+# Import the starter database.
 ddev import-db --src=drupal-code-challenges.sql.gz
+# Display an admin login URL.
 ddev drush uli
