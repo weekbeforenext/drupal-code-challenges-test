@@ -1,0 +1,12 @@
+#!/bin/bash
+
+## Description: Builds the Drupal Code Challenges test site
+## Usage: dcc-build
+## Example: "ddev dcc-build"
+## ProjectTypes: drupal10
+## ExecRaw: true
+
+ddev start
+ddev composer install
+ddev import-db --src=drupal-code-challenges.sql.gz
+ddev drush uli

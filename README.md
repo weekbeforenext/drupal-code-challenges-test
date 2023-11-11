@@ -11,12 +11,9 @@ A Drupal site for testing Drupal Code Challenge solutions locally or remotely.
 
 1. Install [DDEV](https://ddev.readthedocs.io/en/stable/) on your computer.
 
-2. Build this site.
+2. Build this site using the following custom DDEV command:
     ```
-    ddev start;
-    ddev composer install;
-    ddev import-db --src=drupal-code-challenges.sql.gz;
-    ddev launch
+    ddev dcc-build
     ```
 
 ## Add a GitHub module to composer
@@ -64,23 +61,8 @@ If you've started testing a module and changes are committed and pushed to the f
 
 ## Updating Drupal core (Maintainers Only)
 
-Maintainers of this project can follow these steps to keep this project up-to-date with core and contrib module updates.
+Maintainers of this project can use the follow custom DDEV command to keep this project up-to-date with core and contrib module updates:
 
-1. Install the site in DDEV and run the following:
-
-    ```
-    ddev composer update drupal/core-composer-scaffold drupal/core-project-message drupal/core-recommended -W
-    ```
-
-2. Run the Drush database update command and export configuration updates:
-
-    ```
-    ddev drush updb;
-    ddev drush cex -y
-    ```
-
-3. Export a new starter database backup file:
-
-    ```
-    ddev drush sql-dump --gzip > drupal-code-challenges.sql.gz
-    ```
+```
+ddev dcc-update
+```
