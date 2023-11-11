@@ -1,0 +1,18 @@
+#!/bin/bash
+
+## Description: Updates Drupal core and contrib modules
+## Usage: dcc-update
+## Example: "ddev dcc-update"
+## ProjectTypes: drupal10
+## ExecRaw: true
+
+# Update Drupal core in composer.
+ddev composer update drupal/core-composer-scaffold drupal/core-project-message drupal/core-recommended -W
+# Update Admin Toolbar contrib module.
+ddev composer update drupal/admin_toolbar
+# Run database updates.
+ddev drush updb
+# Export configuration.
+ddev drush cex -y
+# Export a new starter database.
+ddev drush sql-dump --gzip > drupal-code-challenges.sql.gz
