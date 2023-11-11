@@ -1,0 +1,12 @@
+#!/bin/bash
+
+## Description: Adds GitHub Drupal module to composer
+## Usage: dcc-add-module [username] [repo-name] [branch-name]
+## Example: "ddev dcc-add-module weekbeforenext dcc-api-migration feature/weekbeforenext/2--migration"
+## ProjectTypes: drupal10
+## ExecRaw: true
+
+# Add the repository configuration to composer.json.
+ddev composer config repositories.dcc "{\"type\": \"package\", \"package\": {\"name\": \"$1/$2\", \"version\": \"dev-$3\", \"type\": \"drupal-module\", \"source\": {\"url\": \"https://github.com/$1/$2.git\", \"type\": \"git\", \"reference\": \"$3\"}}}"
+# Require the package in composer.
+ddev composer require "$1/$2"
