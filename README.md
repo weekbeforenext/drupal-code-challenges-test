@@ -26,15 +26,17 @@ ddev dcc-add-module [username] [repo-name] [branch-name]
 
 Replace `[username]` with the GitHub repository username and `[repo-name]` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
 
-Replace `[branch_name]` with the name of the branch you want to test for the GitHub repository.
+Replace `[branch-name]` with the name of the branch you want to test for the GitHub repository.
 
 ### Update to the latest feature branch changes
 
 If you've started testing a module and changes are committed and pushed to the feature branch, use this custom DDEV command to pull in the latest code for re-testing:
 
 ```
-ddev dcc-up-module
+ddev dcc-up-module [username] [repo-name]
 ```
+
+Replace `[username]` with the GitHub repository username and `[repo-name]` with the repository name. For example, the username of this project is `weekbeforenext` and the repository name is `drupal-code-challenges-test`.
 
 ## Remote testing (Tugboat)
 
