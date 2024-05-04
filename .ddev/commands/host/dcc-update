@@ -7,11 +7,11 @@
 ## ExecRaw: true
 
 # Update Drupal core in composer.
-ddev composer update drupal/core-composer-scaffold drupal/core-project-message drupal/core-recommended -W
+ddev composer update drupal/core-composer-scaffold drupal/core-project-message drupal/core-recommended drush/drush -W
 # Update Admin Toolbar contrib module.
 ddev composer update drupal/admin_toolbar
 # Run database updates.
-ddev drush updb
+ddev drush updb -y
 # Export configuration.
 ddev drush cex -y
 # Export a new starter database.
