@@ -3,12 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.entity_browser
     - entity_browser.browser.article_entity_browser
     - field.field.node.page.body
     - field.field.node.page.field_article_reference
+    - field.field.node.page.field_article_reference_inline
     - node.type.page
   module:
     - entity_browser
+    - inline_entity_form
     - path
     - text
 _core:
@@ -47,6 +50,19 @@ content:
       open: true
       field_widget_display_settings: {  }
       selection_mode: selection_append
+    third_party_settings: {  }
+  field_article_reference_inline:
+    type: inline_entity_form_simple
+    weight: 122
+    region: content
+    settings:
+      form_mode: entity_browser
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      collapsible: false
+      collapsed: false
+      revision: false
     third_party_settings: {  }
   path:
     type: path

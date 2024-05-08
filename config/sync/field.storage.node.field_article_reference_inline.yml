@@ -1,0 +1,19 @@
+uuid: 501f322a-a24c-4b63-8d17-2025d2448e4b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_article_reference_inline
+field_name: field_article_reference_inline
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
