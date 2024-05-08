@@ -1,8 +1,9 @@
-uuid: 4b944d55-2b70-47db-9dcc-092f5d4267e1
+uuid: c9c21094-0c16-49f2-ba76-fe330df5a18b
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.node.entity_browser
     - field.field.node.article.body
     - field.field.node.article.comment
     - field.field.node.article.field_image
@@ -17,10 +18,10 @@ dependencies:
     - text
 _core:
   default_config_hash: ewbd6G2uX456-bgwseM2Q-KQG3RkASoyHmTh-XR3oLU
-id: node.article.default
+id: node.article.entity_browser
 targetEntityType: node
 bundle: article
-mode: default
+mode: entity_browser
 content:
   body:
     type: text_textarea_with_summary
