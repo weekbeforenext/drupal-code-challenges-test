@@ -46,6 +46,11 @@
                 "web-root": "web/"
             }
         },
+        "patches": {
+            "drupal/conditional_fields": {
+                "3063335: Support for Entity Browser": "https://git.drupalcode.org/project/conditional_fields/-/merge_requests/48.patch"
+            }
+        },
         "installer-paths": {
             "web/core": [
                 "type:drupal-core"
