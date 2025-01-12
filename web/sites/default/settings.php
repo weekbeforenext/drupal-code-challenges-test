@@ -115,14 +115,6 @@ $databases = [];
  * namespace. This is optional for projects managed with Composer if the
  * driver's namespace is in Composer's autoloader.
  *
- * Transaction support is enabled by default for all drivers that support it,
- * including MySQL. To explicitly disable it, set the 'transactions' key to
- * FALSE.
- * Note that some configurations of MySQL, such as the MyISAM engine, don't
- * support it and will proceed silently even if enabled. If you experience
- * transaction related crashes with such configuration, set the 'transactions'
- * key to FALSE.
- *
  * For each database, you may optionally specify multiple "target" databases.
  * A target database allows Drupal to try to send certain queries to a
  * different database if it can but fall back to the default connection if not.
@@ -146,49 +138,31 @@ $databases = [];
  * request as needed.  The fourth line creates a new database with a name of
  * "extra".
  *
- * You can optionally set prefixes for some or all database table names
- * by using the 'prefix' setting. If a prefix is specified, the table
- * name will be prepended with its value. Be sure to use valid database
- * characters only, usually alphanumeric and underscore. If no prefixes
- * are desired, leave it as an empty string ''.
+ * For MySQL, MariaDB or equivalent databases the 'isolation_level' option can
+ * be set. The recommended transaction isolation level for Drupal sites is
+ * 'READ COMMITTED'. The 'REPEATABLE READ' option is supported but can result
+ * in deadlocks, the other two options are 'READ UNCOMMITTED' and 'SERIALIZABLE'.
+ * They are available but not supported; use them at your own risk. For more
+ * info:
+ * https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html
  *
- * To have all database names prefixed, set 'prefix' as a string:
+ * On your settings.php, change the isolation level:
+ * @code
+ * $databases['default']['default']['init_commands'] = [
+ *   'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+ * ];
+ * @endcode
+ *
+ * You can optionally set a prefix for all database table names by using the
+ * 'prefix' setting. If a prefix is specified, the table name will be prepended
+ * with its value. Be sure to use valid database characters only, usually
+ * alphanumeric and underscore. If no prefix is desired, do not set the 'prefix'
+ * key or set its value to an empty string ''.
+ *
+ * For example, to have all database table prefixed with 'main_', set:
  * @code
  *   'prefix' => 'main_',
  * @endcode
- *
- * Per-table prefixes are deprecated as of Drupal 8.2, and will be removed in
- * Drupal 9.0. After that, only a single prefix for all tables will be
- * supported.
- *
- * To provide prefixes for specific tables, set 'prefix' as an array.
- * The array's keys are the table names and the values are the prefixes.
- * The 'default' element is mandatory and holds the prefix for any tables
- * not specified elsewhere in the array. Example:
- * @code
- *   'prefix' => [
- *     'default'   => 'main_',
- *     'users'     => 'shared_',
- *     'sessions'  => 'shared_',
- *     'role'      => 'shared_',
- *     'authmap'   => 'shared_',
- *   ],
- * @endcode
- * You can also use a reference to a schema/database as a prefix. This may be
- * useful if your Drupal installation exists in a schema that is not the default
- * or you want to access several databases from the same code base at the same
- * time.
- * Example:
- * @code
- *   'prefix' => [
- *     'default'   => 'main.',
- *     'users'     => 'shared.',
- *     'sessions'  => 'shared.',
- *     'role'      => 'shared.',
- *     'authmap'   => 'shared.',
- *   ];
- * @endcode
- * NOTE: MySQL and SQLite's definition of a schema is a database.
  *
  * Advanced users can add or override initial commands to execute when
  * connecting to the database server, as well as PDO connection settings. For
@@ -207,21 +181,21 @@ $databases = [];
  *
  * WARNING: The above defaults are designed for database portability. Changing
  * them may cause unexpected behavior, including potential data loss. See
- * https://www.drupal.org/developing/api/database/configuration for more
- * information on these defaults and the potential issues.
+ * https://www.drupal.org/docs/8/api/database-api/database-configuration for
+ * more information on these defaults and the potential issues.
  *
  * More details can be found in the constructor methods for each driver:
- * - \Drupal\Core\Database\Driver\mysql\Connection::__construct()
- * - \Drupal\Core\Database\Driver\pgsql\Connection::__construct()
- * - \Drupal\Core\Database\Driver\sqlite\Connection::__construct()
+ * - \Drupal\mysql\Driver\Database\mysql\Connection::__construct()
+ * - \Drupal\pgsql\Driver\Database\pgsql\Connection::__construct()
+ * - \Drupal\sqlite\Driver\Database\sqlite\Connection::__construct()
  *
  * Sample Database configuration format for PostgreSQL (pgsql):
  * @code
  *   $databases['default']['default'] = [
  *     'driver' => 'pgsql',
- *     'database' => 'databasename',
- *     'username' => 'sqlusername',
- *     'password' => 'sqlpassword',
+ *     'database' => 'database_name',
+ *     'username' => 'sql_username',
+ *     'password' => 'sql_password',
  *     'host' => 'localhost',
  *     'prefix' => '',
  *   ];
@@ -231,21 +205,42 @@ $databases = [];
  * @code
  *   $databases['default']['default'] = [
  *     'driver' => 'sqlite',
- *     'database' => '/path/to/databasefilename',
+ *     'database' => '/path/to/database_filename',
  *   ];
  * @endcode
  *
  * Sample Database configuration format for a driver in a contributed module:
  * @code
  *   $databases['default']['default'] = [
- *     'driver' => 'mydriver',
- *     'namespace' => 'Drupal\mymodule\Driver\Database\mydriver',
- *     'autoload' => 'modules/mymodule/src/Driver/Database/mydriver/',
- *     'database' => 'databasename',
- *     'username' => 'sqlusername',
- *     'password' => 'sqlpassword',
+ *     'driver' => 'my_driver',
+ *     'namespace' => 'Drupal\my_module\Driver\Database\my_driver',
+ *     'autoload' => 'modules/my_module/src/Driver/Database/my_driver/',
+ *     'database' => 'database_name',
+ *     'username' => 'sql_username',
+ *     'password' => 'sql_password',
  *     'host' => 'localhost',
  *     'prefix' => '',
+ *   ];
+ * @endcode
+ *
+ * Sample Database configuration format for a driver that is extending another
+ * database driver.
+ * @code
+ *   $databases['default']['default'] = [
+ *     'driver' => 'my_driver',
+ *     'namespace' => 'Drupal\my_module\Driver\Database\my_driver',
+ *     'autoload' => 'modules/my_module/src/Driver/Database/my_driver/',
+ *     'database' => 'database_name',
+ *     'username' => 'sql_username',
+ *     'password' => 'sql_password',
+ *     'host' => 'localhost',
+ *     'prefix' => '',
+ *     'dependencies' => [
+ *       'parent_module' => [
+ *         'namespace' => 'Drupal\parent_module',
+ *         'autoload' => 'core/modules/parent_module/src/',
+ *       ],
+ *     ],
  *   ];
  * @endcode
  */
@@ -664,15 +659,6 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 # $settings['container_base_class'] = '\Drupal\Core\DependencyInjection\Container';
 
 /**
- * Override the default yaml parser class.
- *
- * Provide a fully qualified class name here if you would like to provide an
- * alternate implementation YAML parser. The class must implement the
- * \Drupal\Component\Serialization\SerializationInterface interface.
- */
-# $settings['yaml_parser_class'] = NULL;
-
-/**
  * Trusted host configuration.
  *
  * Drupal core can use the Symfony trusted host mechanism to prevent HTTP Host
@@ -742,16 +728,6 @@ $settings['entity_update_batch_size'] = 50;
  * retained after a successful entity update process.
  */
 $settings['entity_update_backup'] = TRUE;
-
-/**
- * State caching.
- *
- * State caching uses the cache collector pattern to cache all requested keys
- * from the state API in a single cache entry, which can greatly reduce the
- * amount of database queries. However, some sites may use state with a
- * lot of dynamic keys which could result in a very large cache.
- */
-$settings['state_cache'] = TRUE;
 
 /**
  * Node migration type.
