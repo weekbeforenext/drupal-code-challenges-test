@@ -1,0 +1,12 @@
+ai_provider_yolov8.settings:
+  type: config_object
+  label: 'YOLOv8 Settings'
+  mapping:
+    host_name:
+      type: string
+      label: 'Host Name'
+      required: true
+    port:
+      type: integer
+      label: 'Port'
+      required: false

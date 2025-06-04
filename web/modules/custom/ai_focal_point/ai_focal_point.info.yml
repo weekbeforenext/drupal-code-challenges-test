@@ -1,0 +1,8 @@
+name: 'AI Focal Point'
+type: module
+description: 'Use computer vision modules to determine image focal point.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - focal_point:focal_point
+  - ai_yolov8_provider:ai_yolov8_provider

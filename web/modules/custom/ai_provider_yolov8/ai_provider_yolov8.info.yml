@@ -1,0 +1,7 @@
+name: 'YOLOv8 AI Provider'
+type: module
+description: 'Connects to a local YOLOv8 inference API.'
+core_version_requirement: ^10 || ^11
+package: AI
+dependencies:
+  - ai:ai

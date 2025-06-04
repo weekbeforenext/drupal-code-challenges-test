@@ -1,0 +1,28 @@
+uuid: 0e9b01b9-0cee-4e30-81eb-ebef61eba57a
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+  enforced:
+    module:
+      - responsive_image
+_core:
+  default_config_hash: mrB3ZZ2I596NYxr6JI4P-3jAwkWSHo-oOeZrF6wS8bE
+name: max_325x325
+label: 'Max 325x325'
+effects:
+  f2b6c795-26ae-4130-aa18-aa120ea3ba98:
+    uuid: f2b6c795-26ae-4130-aa18-aa120ea3ba98
+    id: image_convert
+    weight: -9
+    data:
+      extension: webp
+  3cfb7c60-46a2-483f-a221-a713a707c78d:
+    uuid: 3cfb7c60-46a2-483f-a221-a713a707c78d
+    id: focal_point_scale_and_crop
+    weight: -10
+    data:
+      width: 325
+      height: 325
+      crop_type: focal_point

@@ -1,0 +1,28 @@
+uuid: b75d9270-f36b-4dd3-813e-0c2bc448dc55
+langcode: en
+status: true
+dependencies:
+  module:
+    - focal_point
+  enforced:
+    module:
+      - responsive_image
+_core:
+  default_config_hash: QiRvjTwfEjBpDYdS9xLtqCdkxL94sHoxTO2JBBdhDVQ
+name: max_1300x1300
+label: 'Max 1300x1300 (2048×1536)'
+effects:
+  e8c9d6ba-a017-4a87-9999-7ce52e138e1d:
+    uuid: e8c9d6ba-a017-4a87-9999-7ce52e138e1d
+    id: image_convert
+    weight: -9
+    data:
+      extension: webp
+  f9c7fecd-2a9d-4d8e-abf0-6ecdfc4c89b8:
+    uuid: f9c7fecd-2a9d-4d8e-abf0-6ecdfc4c89b8
+    id: focal_point_scale_and_crop
+    weight: -10
+    data:
+      width: 2048
+      height: 1536
+      crop_type: focal_point

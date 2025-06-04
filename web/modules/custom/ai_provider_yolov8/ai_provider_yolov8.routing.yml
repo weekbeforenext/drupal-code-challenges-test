@@ -1,0 +1,8 @@
+ai_provider_yolov8.settings_form:
+  path: '/admin/config/ai/providers/yolov8'
+  defaults:
+    _form: '\Drupal\ai_provider_yolov8\Form\Yolov8ConfigForm'
+    _title: 'Setup YOLOv8 Configuration'
+  requirements:
+    _permission: 'administer ai providers'
+
