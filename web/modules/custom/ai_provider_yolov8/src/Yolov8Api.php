@@ -6,6 +6,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\file\Entity\File;
 use GuzzleHttp\Client;
 
 /**
@@ -47,17 +48,28 @@ class Yolov8Api {
   /**
    * Makes a Object Detection task call.
    *
-   * @param string $endpoint
-   *   The endpoint url or model name.
-   * @param string $filePath
-   *   The image file path to look at.
+   * @param \Drupal\file\Entity\File $file_entity
+   *   The file entity.
    *
    * @return string
    *   The return response undecoded.
    */
-  public function imageObjectDetection($filePath) {
+  public function imageObjectDetection($file_entity) {
     $apiEndPoint = $this->finalEndpoint('predict');
-    return $this->makeRequest($apiEndPoint, NULL, $filePath);
+    $real_path = $this->fileSystem
+      ->realpath($file_entity->getFileUri());
+
+    $multipart = [
+      [
+        'name'=> 'file',
+        'contents' => fopen($real_path, 'r'),
+        'filename' => $file_entity->getFilename(),
+        'headers'  => [
+          'Content-Type' => $file_entity->getMimeType(),
+        ],
+      ],
+    ];
+    return $this->makeRequest($apiEndPoint, $multipart);
   }
   
   /**
@@ -80,27 +92,22 @@ class Yolov8Api {
    *   The api endpoint.
    * @param string $json
    *   JSON params.
-   * @param string $file
-   *   A (real) filepath.
+   * @param array $multipart
+   *   A multipart array.
    * @param string $method
    *   The http method.
    *
    * @return string|object
    *   The return response.
    */
-  protected function makeRequest($apiEndPoint, $json = NULL, $file = NULL, $method = 'POST') {
+  protected function makeRequest($apiEndPoint, array $multipart = [], $method = 'POST') {
     // We can wait some.
     $options['connect_timeout'] = 120;
     $options['read_timeout'] = 120;
     // Set authorization header.
 
-    if ($json) {
-      $options['body'] = json_encode($json);
-      $options['headers']['Content-Type'] = 'application/json';
-    }
-
-    if ($file) {
-      $options['body'] = fopen($file, 'r');
+    if ($multipart) {
+      $options['multipart'] = $multipart;
     }
 
     $res = $this->client->request($method, $apiEndPoint, $options);

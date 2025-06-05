@@ -5,6 +5,7 @@ namespace Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection;
 use Drupal\ai\OperationType\GenericType\ImageFile;
 use Drupal\ai\OperationType\InputBase;
 use Drupal\ai\OperationType\InputInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Input object for image object detection.
@@ -14,9 +15,9 @@ class ImageObjectDetectionInput extends InputBase implements InputInterface {
   /**
    * The image file to detect objects.
    *
-   * @var \Drupal\ai\OperationType\GenericType\ImageFile
+   * @var \Drupal\file\Entity\File
    */
-  private ImageFile $file;
+  private File $file;
 
   /**
    * The (in certain cases optional) objects to filter the object detection.
@@ -28,12 +29,12 @@ class ImageObjectDetectionInput extends InputBase implements InputInterface {
   /**
    * The constructor.
    *
-   * @param \Drupal\ai\OperationType\GenericType\ImageFile $file
+   * @param \Drupal\file\Entity\File $file
    *   The image file to classify.
    * @param array $objects
    *   The (in certain cases optional) objects to filter the object detection.
    */
-  public function __construct(ImageFile $file, array $objects = []) {
+  public function __construct(File $file, array $objects = []) {
     $this->file = $file;
     $this->objects = $objects;
   }
@@ -41,10 +42,10 @@ class ImageObjectDetectionInput extends InputBase implements InputInterface {
   /**
    * Get the image that will be classify.
    *
-   * @return \Drupal\ai\OperationType\GenericType\ImageFile
-   *   The binary.
+   * @return \Drupal\file\Entity\File
+   *   The file entity.
    */
-  public function getImageFile(): ImageFile {
+  public function getImageFile(): File {
     return $this->file;
   }
 
@@ -61,10 +62,10 @@ class ImageObjectDetectionInput extends InputBase implements InputInterface {
   /**
    * Set the image file to detect objects.
    *
-   * @param \Drupal\ai\OperationType\GenericType\ImageFile $file
+   * @param \Drupal\file\Entity\File $file
    *   The image file to classify.
    */
-  public function setImageFile(ImageFile $file) {
+  public function setImageFile(File $file) {
     $this->file = $file;
   }
 

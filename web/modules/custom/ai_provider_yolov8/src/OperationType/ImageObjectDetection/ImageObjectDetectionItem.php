@@ -12,7 +12,7 @@ class ImageObjectDetectionItem {
    *
    * @var array
    */
-  private array $objects;
+  private array $detection;
 
   /**
    * The confidence score of the image object detection.
@@ -24,49 +24,29 @@ class ImageObjectDetectionItem {
   /**
    * The constructor.
    */
-  public function __construct(array $objects, float|NULL $confidence_score = NULL) {
-    $this->objects = $objects;
+  public function __construct(array $detection, float|NULL $confidence_score = NULL) {
+    $this->detection = $detection;
     $this->confidenceScore = $confidence_score;
   }
 
   /**
-   * Returns the objects.
+   * Returns the detection.
    *
    * @return array
    *   The objects.
    */
-  public function getObjects(): array {
-    return $this->objects;
+  public function getDetection(): array {
+    return $this->detection;
   }
 
   /**
-   * Sets the objects.
+   * Sets the detection.
    *
-   * @param array $objects
-   *   The objects.
+   * @param array $detection
+   *   The detection.
    */
-  public function setObjects(array $objects): void {
-    $this->objects = $objects;
-  }
-
-  /**
-   * Returns the confidence score.
-   *
-   * @return float|null
-   *   The confidence score.
-   */
-  public function getConfidenceScore(): float|NULL {
-    return $this->confidenceScore;
-  }
-
-  /**
-   * Sets the confidence score.
-   *
-   * @param float|null $confidence_score
-   *   The confidence score.
-   */
-  public function setConfidenceScore(float|NULL $confidence_score): void {
-    $this->confidenceScore = $confidence_score;
+  public function setDetection(array $detection): void {
+    $this->detection = $detection;
   }
 
   /**

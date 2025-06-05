@@ -131,22 +131,18 @@ class Yolov8Provider extends AiProviderClientBase implements
    */
   public function imageObjectDetection(string|array|ImageObjectDetectionInput $input, string $model_id, array $tags = []): ImageObjectDetectionOutput {
     $info = $this->getModelInfo('image_object_detection', $model_id);
-
     // Normalize the input if needed.
     if ($input instanceof ImageObjectDetectionInput) {
-      $input = $input->getImageFile()->getBinary();
+      $input = $input->getImageFile();
     }
-    // Store temporary file.
-    $temp_file = tempnam(sys_get_temp_dir(), 'ai_image_object_detection');
-    file_put_contents($temp_file, $input);
+
     // Send the request.
-    $response = json_decode($this->client->imageObjectDetection($temp_file), TRUE);
-    // Remove the temporary file.
-    unlink($temp_file);
-    $objectds = [];
-    if (is_array($response)) {
-      foreach ($response as $row) {
-        $objects[] = new ImageObjectDetectionItem($row['objects'], $row['score']);
+    $response = json_decode($this->client->imageObjectDetection($input), TRUE);
+
+    $objects = [];
+    if (isset($response['detections'])) {
+      foreach ($response['detections'] as $row) {
+        $objects[] = new ImageObjectDetectionItem($row, $row['confidence']);
       }
     }
     else {
