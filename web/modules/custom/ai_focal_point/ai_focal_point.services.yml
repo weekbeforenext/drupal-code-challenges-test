@@ -1,0 +1,4 @@
+services:
+  ai_focal_point.calculator:
+    class: 'Drupal\ai_focal_point\Services\FocalPointCalculatorService'
+    arguments: []
