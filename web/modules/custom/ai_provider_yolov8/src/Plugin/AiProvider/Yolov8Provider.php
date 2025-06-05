@@ -93,7 +93,7 @@ class Yolov8Provider extends AiProviderClientBase implements
    */
   public function getApiDefinition(): array {
     // Load the configuration.
-    $definition = Yaml::parseFile($this->moduleHandler->getModule('ai_provider_ollama')->getPath() . '/definitions/api_defaults.yml');
+    $definition = Yaml::parseFile($this->moduleHandler->getModule('ai_provider_yolov8')->getPath() . '/definitions/api_defaults.yml');
     return $definition;
   }
 

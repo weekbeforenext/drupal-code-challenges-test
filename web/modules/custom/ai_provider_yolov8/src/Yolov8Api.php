@@ -3,6 +3,8 @@
 namespace Drupal\ai_provider_yolov8;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\File\FileSystemInterface;
 use GuzzleHttp\Client;
 
@@ -22,9 +24,9 @@ class Yolov8Api {
   protected FileSystemInterface $fileSystem;
 
   /**
-   * The base host.
+   * The module config.
    */
-  protected string $baseHost;
+  protected ImmutableConfig $config;
 
   /**
    * Constructs a new YOLOv8 object.
@@ -32,19 +34,14 @@ class Yolov8Api {
    * @param \GuzzleHttp\Client $client
    *   Http client.
    */
-  public function __construct(Client $client, FileSystemInterface $file_system) {
+  public function __construct(
+    Client $client,
+    FileSystemInterface $file_system,
+    ConfigFactoryInterface $config_factory,
+    ) {
     $this->client = $client;
     $this->fileSystem = $file_system;
-  }
-
-  /**
-   * Sets connect data.
-   *
-   * @param string $baseUrl
-   *   The base url.
-   */
-  public function setConnectData($baseUrl) {
-    $this->baseHost = $baseUrl;
+    $this->config = $config_factory->get('ai_provider_yolov8.settings');
   }
   
   /**
@@ -73,7 +70,7 @@ class Yolov8Api {
    *   The final endpoint.
    */
   protected function finalEndpoint($endpoint) {
-    return rtrim($this->baseHost, '/') . '/' . $endpoint;
+    return rtrim($this->config->get('host_name'), '/') . ':' . $this->config->get('port') . '/' . $endpoint;
   }
 
   /**

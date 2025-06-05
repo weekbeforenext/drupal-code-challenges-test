@@ -19,8 +19,8 @@ function ai_focal_point_page_top(array &$page_top) : void {
   $input = new ImageObjectDetectionInput($normalized_file);
 
   $objects_detected =  \Drupal::service('ai.provider')
-  ->createInstance('ai_yolov8','yolov8', [])
-  ->imageObjectDetection($input)
+  ->createInstance('ai_yolov8', [])
+  ->imageObjectDetection($input, 'yolov8')
   ->getNormalized();
   print_r($objects_detected);
 }

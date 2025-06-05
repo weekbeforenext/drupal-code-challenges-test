@@ -1,4 +1,4 @@
 services:
   ai_provider_yolov8.api:
     class: Drupal\ai_provider_yolov8\Yolov8Api
-    arguments: ['@http_client', '@file_system']
+    arguments: ['@http_client', '@file_system','@config.factory']
