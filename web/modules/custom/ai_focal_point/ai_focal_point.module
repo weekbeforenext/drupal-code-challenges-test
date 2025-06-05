@@ -19,5 +19,17 @@ function ai_focal_point_page_top(array &$page_top) : void {
   ->createInstance('ai_yolov8', [])
   ->imageObjectDetection($input, 'yolov8')
   ->getNormalized();
-  print_r($objects_detected);
+  
+  $objects = [];
+  foreach ($objects_detected as $item) {
+    $objects[] = $item->getDetection();
+  }
+  
+  $file_path = \Drupal::service('file_system')->realpath($file->getFileUri());
+  [$width, $height] = getimagesize($file_path);
+
+  $calculation =  \Drupal::service('ai_focal_point.calculator')
+  ->computeFocalPoint($objects, $width, $height);
+
+  print_r([$calculation['x'], $calculation['y']]);
 }

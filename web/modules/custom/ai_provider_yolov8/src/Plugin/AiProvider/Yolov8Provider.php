@@ -142,14 +142,15 @@ class Yolov8Provider extends AiProviderClientBase implements
     $objects = [];
     if (isset($response['detections'])) {
       foreach ($response['detections'] as $row) {
-        $objects[] = new ImageObjectDetectionItem($row, $row['confidence']);
+        $objects[] = new ImageObjectDetectionItem($row);
       }
     }
     else {
       throw new AiResponseErrorException('Invalid response from YOLOv8.');
     }
 
-    return new ImageObjectDetectionOutput($objects, $response, []);
+    $return = new ImageObjectDetectionOutput($objects, $response, []);
+    return $return;
   }
 
 
