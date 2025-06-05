@@ -7,6 +7,11 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\ai\Attribute\AiProvider;
 use Drupal\ai\Base\AiProviderClientBase;
+use Drupal\ai\Exception\AiResponseErrorException;
+use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionInput;
+use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionInterface;
+use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionItem;
+use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -18,7 +23,8 @@ use Symfony\Component\Yaml\Yaml;
   label: new TranslatableMarkup('ai_yolov8'),
 )]
 class Yolov8Provider extends AiProviderClientBase implements
-  ContainerFactoryPluginInterface {
+  ContainerFactoryPluginInterface,
+  ImageObjectDetectionInterface {
 
   /**
    * The client for API calls.
@@ -49,7 +55,7 @@ class Yolov8Provider extends AiProviderClientBase implements
    */
   public function getConfiguredModels(?string $operation_type = NULL, array $capabilities = []): array {
     return [
-      'yolov8',
+      'image_object_detection' => 'yolov8',
     ];
   }
 
@@ -118,6 +124,36 @@ class Yolov8Provider extends AiProviderClientBase implements
       $host .= ':' . $this->getConfig()->get('port');
     }
     return $host;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function imageObjectDetection(string|array|ImageObjectDetectionInput $input, string $model_id, array $tags = []): ImageObjectDetectionOutput {
+    $info = $this->getModelInfo('image_object_detection', $model_id);
+
+    // Normalize the input if needed.
+    if ($input instanceof ImageObjectDetectionInput) {
+      $input = $input->getImageFile()->getBinary();
+    }
+    // Store temporary file.
+    $temp_file = tempnam(sys_get_temp_dir(), 'ai_image_object_detection');
+    file_put_contents($temp_file, $input);
+    // Send the request.
+    $response = json_decode($this->client->imageObjectDetection($temp_file), TRUE);
+    // Remove the temporary file.
+    unlink($temp_file);
+    $objectds = [];
+    if (is_array($response)) {
+      foreach ($response as $row) {
+        $objects[] = new ImageObjectDetectionItem($row['objects'], $row['score']);
+      }
+    }
+    else {
+      throw new AiResponseErrorException('Invalid response from YOLOv8.');
+    }
+
+    return new ImageObjectDetectionOutput($objects, $response, []);
   }
 
 

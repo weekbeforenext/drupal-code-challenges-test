@@ -1,6 +1,26 @@
 <?php
 
+use Drupal\file\Entity\File;
+use Drupal\ai\OperationType\GenericType\ImageFile;
+use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionInput;
+
 /**
  * @file
  * Primary module hooks for AI Focal Point module.
  */
+
+ 
+function ai_focal_point_page_top(array &$page_top) : void {
+  $file = File::load(1);
+  $real_path = \Drupal::service('file_system')->realpath($file->getFileUri());
+  
+  $image_binary = file_get_contents($real_path);
+  $normalized_file = new ImageFile($image_binary, $file->getMimeType(), $file->getFilename());
+  $input = new ImageObjectDetectionInput($normalized_file);
+
+  $objects_detected =  \Drupal::service('ai.provider')
+  ->createInstance('ai_yolov8','yolov8', [])
+  ->imageObjectDetection($input)
+  ->getNormalized();
+  print_r($objects_detected);
+}

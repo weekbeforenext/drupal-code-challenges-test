@@ -46,65 +46,68 @@ class Yolov8Api {
   public function setConnectData($baseUrl) {
     $this->baseHost = $baseUrl;
   }
-
+  
   /**
-   * Get objects for a given image file.
+   * Makes a Object Detection task call.
    *
-   * @param \Drupal\file\Entity\File $file
-   *   The file entity.
+   * @param string $endpoint
+   *   The endpoint url or model name.
+   * @param string $filePath
+   *   The image file path to look at.
    *
-   * @return array
-   *   The response.
+   * @return string
+   *   The return response undecoded.
    */
-  public function objects($file_entity) {
-    $real_path = $this->fileSystem
-      ->realpath($file_entity->getFileUri());
-
-    $multipart = [
-      [
-        'name'=> 'file',
-        'contents' => fopen($real_path, 'r'),
-        'filename' => $file_entity->getFilename(),
-        'headers'  => [
-          'Content-Type' => $file_entity->getMimeType(),
-        ],
-      ],
-    ];
-    $result = Json::decode($this->makeRequest("predict", [], 'POST', $multipart));
-    return $result;
+  public function imageObjectDetection($filePath) {
+    $apiEndPoint = $this->finalEndpoint('predict');
+    return $this->makeRequest($apiEndPoint, NULL, $filePath);
+  }
+  
+  /**
+   * Is endpoint a serverless endpoint or a dedicated url.
+   *
+   * @param string $endpoint
+   *   The endpoint url or model name.
+   *
+   * @return string
+   *   The final endpoint.
+   */
+  protected function finalEndpoint($endpoint) {
+    return rtrim($this->baseHost, '/') . '/' . $endpoint;
   }
 
   /**
-   * Make YOLOv8 call.
+   * Make Huggingface call.
    *
-   * @param string $path
-   *   The path.
-   * @param array $query_string
-   *   The query string.
+   * @param string $apiEndPoint
+   *   The api endpoint.
+   * @param string $json
+   *   JSON params.
+   * @param string $file
+   *   A (real) filepath.
    * @param string $method
-   *   The method.
-   * @param array $multipart
-   *   Data to attach if POST/PUT/PATCH.
-   * @param array $options
-   *   Extra headers.
+   *   The http method.
    *
    * @return string|object
    *   The return response.
    */
-  protected function makeRequest($path, array $query_string = [], $method = 'POST', array $multipart, array $options = []) {
-      $options['connect_timeout'] = 120;
-      $options['read_timeout'] = 120;
-      $options['timeout'] = 120;
-      $options['headers']['accept'] = 'application/json';
-      $options['headers']['Content-Type'] = 'multipart/form-data';
-      $options['multipart'] = $multipart;
+  protected function makeRequest($apiEndPoint, $json = NULL, $file = NULL, $method = 'POST') {
+    // We can wait some.
+    $options['connect_timeout'] = 120;
+    $options['read_timeout'] = 120;
+    // Set authorization header.
 
-    $new_url = rtrim($this->baseHost, '/') . '/' . $path;
-    $new_url .= count($query_string) ? '?' . http_build_query($query_string) : '';
+    if ($json) {
+      $options['body'] = json_encode($json);
+      $options['headers']['Content-Type'] = 'application/json';
+    }
 
-    $res = $this->client->request($method, $new_url, $options);
+    if ($file) {
+      $options['body'] = fopen($file, 'r');
+    }
 
-    return $res->getBody()->getContents();
+    $res = $this->client->request($method, $apiEndPoint, $options);
+    return $res->getBody();
   }
 
 }

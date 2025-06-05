@@ -5,4 +5,4 @@ package: Custom
 core_version_requirement: ^10 || ^11
 dependencies:
   - focal_point:focal_point
-  - ai_yolov8_provider:ai_yolov8_provider
+  - ai_provider_yolov8:ai_provider_yolov8
