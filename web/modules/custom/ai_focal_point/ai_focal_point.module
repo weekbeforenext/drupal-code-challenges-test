@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\file\Entity\File;
-use Drupal\ai\OperationType\GenericType\ImageFile;
 use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDetectionInput;
 
 /**
@@ -11,25 +10,32 @@ use Drupal\ai_provider_yolov8\OperationType\ImageObjectDetection\ImageObjectDete
 
  
 function ai_focal_point_page_top(array &$page_top) : void {
+  // Load an existing file.
   $file = File::load(1);
-  
+  // Convert the file into an operation type input.
   $input = new ImageObjectDetectionInput($file);
 
+  // Get objects from YOLOv8.
   $objects_detected =  \Drupal::service('ai.provider')
   ->createInstance('ai_yolov8', [])
   ->imageObjectDetection($input, 'yolov8')
   ->getNormalized();
   
+  // Create the object array for calculation.
   $objects = [];
   foreach ($objects_detected as $item) {
     $objects[] = $item->getDetection();
   }
   
-  $file_path = \Drupal::service('file_system')->realpath($file->getFileUri());
+  // Get image width/height.
+  $file_path = \Drupal::service('file_system')
+    ->realpath($file->getFileUri());
   [$width, $height] = getimagesize($file_path);
 
+  // Send data to custom calculation service.
   $calculation =  \Drupal::service('ai_focal_point.calculator')
   ->computeFocalPoint($objects, $width, $height);
 
-  print_r([$calculation['x'], $calculation['y']]);
+  // print calculation response on page.
+  print_r($calculation);
 }
