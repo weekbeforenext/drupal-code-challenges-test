@@ -1,0 +1,6 @@
+image_object_detection:
+  input:
+    description: 'Binary of image to classify.'
+    type: 'string'
+    default: ''
+    required: true
